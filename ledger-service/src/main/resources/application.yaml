@@ -1,14 +1,18 @@
 spring:
   kafka:
     bootstrap-servers: localhost:9093
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: ledger-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
   datasource:
     # Standard datasource properties
-    url: jdbc:postgresql://localhost:5432/accountsdb
-    username: <user>
-    password: <user>
+    url: jdbc:postgresql://localhost:5432/ledgerdb
+    username: postgres
+    password: postgres
     driver-class-name: org.postgresql.Driver
     # HikariCP specific properties
     # These properties are now explicitly defined to show pool details in the logs
@@ -32,7 +36,7 @@ spring:
           time_zone: UTC
 
 server:
-  port: 8080
+  port: 8081
 
 springdoc:
   api-docs:
