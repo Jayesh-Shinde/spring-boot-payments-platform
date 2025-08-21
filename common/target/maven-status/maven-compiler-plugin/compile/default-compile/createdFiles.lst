@@ -1,0 +1,3 @@
+com/springboot/dto/requests/AccountRequest.class
+com/springboot/dto/response/AccountBalanceResponse.class
+com/springboot/dto/events/AccountCreatedEvent.class
