@@ -7,6 +7,10 @@
     <groupId>com.springboot</groupId>
     <artifactId>psyment-platform</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>account-services</module>
+    </modules>
 
     <properties>
         <java.version>21</java.version>
