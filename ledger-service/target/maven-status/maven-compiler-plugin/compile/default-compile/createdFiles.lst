@@ -1,1 +1,8 @@
+com/springboot/entity/Journal.class
+com/springboot/repository/JournalLineRepository.class
+com/springboot/service/JournalService.class
 com/springboot/LedgerServiceApplication.class
+com/springboot/repository/JournalRepository.class
+com/springboot/entity/JournalLines.class
+com/springboot/controller/JournalController.class
+com/springboot/service/JournalServiceImpl.class

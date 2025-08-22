@@ -11,8 +11,8 @@ spring:
   datasource:
     # Standard datasource properties
     url: jdbc:postgresql://localhost:5432/ledgerdb
-    username: postgres
-    password: postgres
+    username: <user>
+    password: <user>
     driver-class-name: org.postgresql.Driver
     # HikariCP specific properties
     # These properties are now explicitly defined to show pool details in the logs
