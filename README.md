@@ -92,7 +92,7 @@ public.journals(id);
 ### Setup and Run
 
 - Clone the repository :
-    - git clone https://github.com/YOUR_USERNAME/spring-boot-payments-platform.git
+    - git clone https://github.com/Jayesh-Shinde/spring-boot-payments-platform.git
       cd spring-boot-payments-platform
 
 - Start infrastructure (Postgres + Kafka):
