@@ -5,4 +5,5 @@
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/events/AccountCreatedEvent.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/requests/AccountRequest.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/requests/JournalRequest.java
+/Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/requests/TransferRequest.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/enums/JournalStatus.java

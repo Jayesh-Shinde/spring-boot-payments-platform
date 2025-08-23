@@ -1,6 +1,7 @@
 package com.springboot.controller;
 
 import com.springboot.dto.requests.JournalRequest;
+import com.springboot.dto.requests.TransferRequest;
 import com.springboot.dto.response.AccountBalanceResponse;
 import com.springboot.dto.response.JournalResponse;
 import com.springboot.service.JournalService;
@@ -27,8 +28,27 @@ public class JournalController {
         return new ResponseEntity<>(journalService.createJournal(journalRequest, idempotencyKey), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{accountId}")
+    @GetMapping("/balance/{accountId}")
     public ResponseEntity<AccountBalanceResponse> getAccountBalance(@PathVariable UUID accountId) {
         return new ResponseEntity<>(journalService.getAccountBalance(accountId), HttpStatus.OK);
     }
+
+    @PostMapping("/transfer")
+    public ResponseEntity<JournalResponse> processTransferRequest(@Valid @RequestBody TransferRequest transferRequest,
+                                                                  @RequestHeader("Idempotency-Key") String idempotencyKey) {
+        return new ResponseEntity<>(journalService.createJournalTransfer(transferRequest, idempotencyKey), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<JournalResponse> getByJournalId(
+            @PathVariable UUID id) {
+        return new ResponseEntity<>(journalService.getByJournalId(id), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<JournalResponse> getByAccountId(
+            @RequestParam(name = "accountId") UUID id) {
+        return new ResponseEntity<>(journalService.getByAccountId(id), HttpStatus.CREATED);
+    }
+
 }
