@@ -1,6 +1,5 @@
 package com.springboot.dto.response;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,9 +8,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class AccountBalanceResponse {
-    @NotNull
+public class AccountBalances {
     private UUID accountId;
-    @NotNull
     private BigDecimal balance;
 }

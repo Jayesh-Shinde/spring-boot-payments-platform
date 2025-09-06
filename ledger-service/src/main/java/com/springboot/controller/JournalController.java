@@ -2,7 +2,7 @@ package com.springboot.controller;
 
 import com.springboot.dto.requests.JournalRequest;
 import com.springboot.dto.requests.TransferRequest;
-import com.springboot.dto.response.AccountBalanceResponse;
+import com.springboot.dto.response.AccountBalances;
 import com.springboot.dto.response.JournalResponse;
 import com.springboot.service.JournalService;
 import jakarta.validation.Valid;
@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -29,7 +30,7 @@ public class JournalController {
     }
 
     @GetMapping("/balance/{accountId}")
-    public ResponseEntity<AccountBalanceResponse> getAccountBalance(@PathVariable UUID accountId) {
+    public ResponseEntity<AccountBalances> getAccountBalance(@PathVariable UUID accountId) {
         return new ResponseEntity<>(journalService.getAccountBalance(accountId), HttpStatus.OK);
     }
 
@@ -49,6 +50,16 @@ public class JournalController {
     public ResponseEntity<JournalResponse> getByAccountId(
             @RequestParam(name = "accountId") UUID id) {
         return new ResponseEntity<>(journalService.getByAccountId(id), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/accounts")
+    public ResponseEntity<List<AccountBalances>> getAllAccountBalances() {
+        return new ResponseEntity<>(journalService.getAllAccountBalance(), HttpStatus.OK);
+    }
+
+    @GetMapping("/reconciliation")
+    public ResponseEntity<List<UUID>> getReconciliation() {
+        return new ResponseEntity<>(journalService.getReconciliation(), HttpStatus.OK);
     }
 
 }

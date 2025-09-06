@@ -6,7 +6,7 @@ import com.springboot.dto.events.AccountCreatedEvent;
 import com.springboot.dto.requests.JournalLineRequest;
 import com.springboot.dto.requests.JournalRequest;
 import com.springboot.dto.requests.TransferRequest;
-import com.springboot.dto.response.AccountBalanceResponse;
+import com.springboot.dto.response.AccountBalances;
 import com.springboot.dto.response.JournalLineResponse;
 import com.springboot.dto.response.JournalResponse;
 import com.springboot.entity.Journal;
@@ -14,6 +14,7 @@ import com.springboot.entity.JournalLines;
 import com.springboot.repository.JournalLineRepository;
 import com.springboot.repository.JournalRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,9 +110,9 @@ public class JournalServiceImpl implements JournalService {
     }
 
     @Override
-    public AccountBalanceResponse getAccountBalance(UUID accountID) {
+    public AccountBalances getAccountBalance(UUID accountID) {
         BigDecimal accountBalance = journalRepository.getAccountBalance(accountID);
-        return new AccountBalanceResponse(accountID, accountBalance);
+        return new AccountBalances(accountID, accountBalance);
     }
 
     @Transactional
@@ -163,6 +164,35 @@ public class JournalServiceImpl implements JournalService {
     @Override
     public JournalResponse getByAccountId(UUID accountId) {
         return mapJournalResponseFromRaw(journalRepository.getByAccountId(accountId));
+    }
+
+    @Override
+    public List<AccountBalances> getAllAccountBalance() {
+        return mapAccountBalanceFromRaw(journalLineRepository.getAllAccountResponse());
+    }
+
+    @Override
+    public List<UUID> getReconciliation() {
+        return mapReconciliation(journalLineRepository.getReconciliation());
+    }
+
+    private List<UUID> mapReconciliation(List<Map<String, Object>> data) {
+        List<UUID> res = new ArrayList<>();
+        for (Map<String, Object> map : data) {
+            res.add((UUID) map.get("journal_id"));
+        }
+        return res;
+    }
+
+    private List<AccountBalances> mapAccountBalanceFromRaw(List<Map<String, Object>> data) {
+        List<AccountBalances> accountBalances = new ArrayList<>();
+        for (Map<String, Object> map : data) {
+            accountBalances.add(new AccountBalances(
+                    (UUID) map.get("accountId"),
+                    (BigDecimal) map.get("balance")
+            ));
+        }
+        return accountBalances;
     }
 
     private JournalResponse mapJournalResponseFromRaw(List<Map<String, Object>> byJournalId) {
