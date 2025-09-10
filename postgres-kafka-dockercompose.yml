@@ -40,9 +40,47 @@ services:
     volumes:
       - kafka_data:/var/lib/kafka/data
 
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL_HOST: keycloak-postgres
+      KC_DB_URL_PORT: 5432
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: <your username>
+      KC_DB_PASSWORD: <your password>
+    ports:
+      - "3002:8080"
+    entrypoint: [ "/bin/sh" ]
+    # The command is now interpreted by the shell
+    command: [ "-c", "sleep 15 && /opt/keycloak/bin/kc.sh start-dev" ]
+    depends_on:
+      keycloak-postgres:
+        condition: service_healthy
+
+  keycloak-postgres:
+    image: postgres:16
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: keycloak
+      KC_DB_USERNAME: <your username>
+      KC_DB_PASSWORD: <your password>
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql/data
+
 volumes:
   postgres_data:
   kafka_data:
   zookeeper_data:
   zookeeper_log:
+  keycloak_postgres_data:
+
+
 
