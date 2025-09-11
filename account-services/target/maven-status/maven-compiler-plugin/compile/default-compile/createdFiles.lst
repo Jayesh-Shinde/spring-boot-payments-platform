@@ -1,5 +1,6 @@
 com/springboot/controller/AccountsController.class
 com/springboot/service/AccountsServiceImpl.class
+com/springboot/configuration/JpaAuditingConfig.class
 com/springboot/entity/Accounts.class
 com/springboot/repository/AccountRepository.class
 com/springboot/AccountServiceApplication.class

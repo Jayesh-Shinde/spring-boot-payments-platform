@@ -4,5 +4,7 @@
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/ledger-service/src/main/java/com/springboot/service/JournalService.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/ledger-service/src/main/java/com/springboot/service/JournalServiceImpl.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/ledger-service/src/main/java/com/springboot/repository/JournalRepository.java
+/Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/ledger-service/src/main/java/com/springboot/SecurityConfig.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/ledger-service/src/main/java/com/springboot/controller/JournalController.java
+/Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/ledger-service/src/main/java/com/springboot/configuration/JpaAuditingConfig.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/ledger-service/src/main/java/com/springboot/entity/Journal.java
