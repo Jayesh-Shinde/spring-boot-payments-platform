@@ -1,4 +1,10 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:3002/realms/SpringBootRealm
+          jwk-set-uri: http://localhost:3002/realms/SpringBootRealm/protocol/openid-connect/certs
   kafka:
     bootstrap-servers: localhost:9093
     consumer:
