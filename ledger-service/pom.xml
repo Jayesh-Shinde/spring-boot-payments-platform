@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>ledger-service</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>
@@ -18,7 +19,6 @@
         <mockito.version>5.8.0</mockito.version>
     </properties>
 
-    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -103,6 +103,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.5.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

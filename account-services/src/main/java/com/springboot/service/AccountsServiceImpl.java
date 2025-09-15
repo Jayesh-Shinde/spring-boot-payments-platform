@@ -22,7 +22,7 @@ public class AccountsServiceImpl implements AccountsService {
     private final AccountRepository accountRepository;
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    @Transactional
+    // TODO: resolve later  @Transactional removing this as bitnami/kafka:3.7.0 does not support if
     public void sendAccountCreated(AccountCreatedEvent accountCreatedEvent) {
         kafkaTemplate.send("accounts.created", accountCreatedEvent.getAccountId().toString(), accountCreatedEvent);
         System.out.println("Sent event to kafka " + accountCreatedEvent);

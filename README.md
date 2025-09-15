@@ -108,4 +108,27 @@ public.journals(id);
     - cd accounts-service && mvn spring-boot:run
     - cd ledger-service && mvn spring-boot:run
 
+### How to create image of your services
+
+- Docker file setup
+    - At the root of your project run mvn clean install
+    - Go to each microservice folder and create a docker file Ex: sample is below
+
+```dockerfile
+
+FROM eclipse-temurin:21-jre-alpine
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} ledger-service-1.0-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/ledger-service-1.0-SNAPSHOT.jar"]
+
+# steps to build and push image
+# docker build -t ledger-service:1.0 .
+
+# docker tag ledger-service:1.0 <your docker registry>/ledger-service:2.0.0
+
+# docker push <your docker registry>/ledger-service:2.0.0
+
+```
+
+
 

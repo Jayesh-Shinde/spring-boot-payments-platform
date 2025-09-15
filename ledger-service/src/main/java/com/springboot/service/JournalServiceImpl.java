@@ -28,7 +28,7 @@ public class JournalServiceImpl implements JournalService {
     private final JournalRepository journalRepository;
     private final JournalLineRepository journalLineRepository;
 
-    @Transactional
+    //TODO: resolve later @Transactional removing this as bitnami/kafka:3.7.0 does not support if
     @KafkaListener(topics = "accounts.created", groupId = "ledger-service")
     public void processAccountCreated(AccountCreatedEvent accountCreatedEvent) {
         System.out.println("Received event in Ledger: " + accountCreatedEvent);

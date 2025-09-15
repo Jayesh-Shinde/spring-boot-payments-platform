@@ -3,10 +3,10 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:3002/realms/SpringBootRealm
-          jwk-set-uri: http://localhost:3002/realms/SpringBootRealm/protocol/openid-connect/certs
+          issuer-uri: http://keycloak:8080/realms/SpringBootRealm
+  #          jwk-set-uri: http://localhost/realms/SpringBootRealm/protocol/openid-connect/certs
   kafka:
-    bootstrap-servers: localhost:9093
+    bootstrap-servers: kafka:9092
     consumer:
       group-id: ledger-service
       auto-offset-reset: earliest
@@ -16,7 +16,7 @@ spring:
         spring.json.trusted.packages: "*"
   datasource:
     # Standard datasource properties
-    url: jdbc:postgresql://localhost:5432/ledgerdb
+    url: jdbc:postgresql://postgresql:5432/ledgerdb
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver

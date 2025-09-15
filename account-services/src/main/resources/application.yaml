@@ -1,12 +1,12 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9093
+    bootstrap-servers: kafka:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   datasource:
     # Standard datasource properties
-    url: jdbc:postgresql://localhost:5432/accountsdb
+    url: jdbc:postgresql://postgresql:5432/accountsdb
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
