@@ -136,10 +136,33 @@ ENTRYPOINT ["java","-jar","/ledger-service-1.0-SNAPSHOT.jar"]
         2) kafka for sharing messages between the microservices
         3) keycloak service for generating and validating access token //TODO
         4) postgresql for persisting data of keycloak //TODO
-        5) account-service //TODO
-        6) ledger-service //TODO
+        5) account-service
+        6) ledger-service
         7) networking ingress service to expose account service / ledger service / keycloak to outside
            of minikube service //TODO
+
+
+- Added a sample github workflow which can run build and publish individual microservices to dockerhub
+    - Open your repository on GitHub.
+    - Click Settings → Actions → Runners → New self-hosted runner.
+    - Choose your OS and architecture.
+    - GitHub will generate a download URL and setup commands specific to your system.
+    - After following above steps , Go back to GitHub → Settings → Actions → Runners.
+    - You should see your runner listed as Online.
+    - Add a simple GitHub Actions workflow in .github/workflows/ and specify your runner with a
+      runs-on label:
+    - Note.github/workflow directory should be at the root of repo
+
+```
+jobs:
+  test:
+    runs-on: self-hosted
+    steps:
+      - name: 'Checkout repository code'
+        uses: actions/checkout@v4
+      - name: 'Build and push docker images'
+        run: <rest of command , refer file at root of this repo>
+```
   
 
 
