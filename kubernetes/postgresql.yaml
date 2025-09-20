@@ -1,2 +1,66 @@
 apiVersion: v1
-  kind: per
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgresql
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+spec:
+  selector:
+    matchLabels:
+      app: postgresql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresql
+        tier: db
+    spec:
+      containers:
+        - name: postgresql
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "<your username>"
+            - name: POSTGRES_PASSWORD
+              value: "<your password>"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresql-storage
+      volumes:
+        - name: postgresql-storage
+          persistentVolumeClaim:
+            claimName: postgresql-pvc
+
+# kubectl port-forward svc/postgresql 5432:5432
