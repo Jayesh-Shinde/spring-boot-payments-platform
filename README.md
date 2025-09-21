@@ -21,6 +21,7 @@ event-driven architecture with Kafka, and deployment readiness with Docker and K
 - **Apache Kafka**
 - **Docker Compose** (local infra)
 - **Maven (multi-module project)**
+- **Kubernetes and helm**
 
 ### pgsql
 
@@ -154,7 +155,7 @@ ENTRYPOINT ["java","-jar","/ledger-service-1.0-SNAPSHOT.jar"]
       runs-on label:
     - Note.github/workflow directory should be at the root of repo
 
-```
+```yaml
 jobs:
   test:
     runs-on: self-hosted
@@ -164,7 +165,78 @@ jobs:
       - name: 'Build and push docker images'
         run: <rest of command , refer file at root of this repo>
 ```
-  
+
+Here’s a **cleaner, structured version** of your notes with proper indentation and hierarchy for clarity:
+
+---
+
+* **Helm**
+
+    * Use Helm to **reuse template files** across different environments with different values.
+    * Helm can also act as a **package manager**, allowing you to install a release with a specific values file.
+    * Helm charts can be **hosted on GitHub** to distribute from a central repository.
+    * **Steps to create and use a Helm chart:**
+
+        1. **Create a new Helm chart**
+
+           ```bash
+           helm create spring-boot-payment-platform
+           ```
+        2. **Move your deployment files** into the `templates/` folder and replace configurable values with Helm
+           template syntax.
+           Example:
+
+           ```yaml
+           {{ .Values.service.type }}
+           ```
+
+           And in `values.yaml`:
+
+           ```yaml
+           service:
+             type: ClusterIP
+           ```
+        3. **Package the chart**
+
+           ```bash
+           helm package spring-boot-payment-platform
+           ```
+
+            * This generates a `.tgz` chart package.
+        4. **Install the chart locally**
+
+           ```bash
+           cd spring-boot-payment-platform
+           helm install spring-boot-payment-platform .
+           ```
+        5. **Host the chart on GitHub**
+
+            * Create a **GitHub repository** (using GitHub Pages if desired).
+            * Clone the repo locally:
+
+              ```bash
+              git clone https://github.com/<username>/my-helm-charts.git
+              cd my-helm-charts
+              ```
+            * Copy your `.tgz` chart file into the repo.
+            * Generate the Helm repo index:
+
+              ```bash
+              helm repo index . --url https://<username>.github.io/my-helm-charts/
+              ```
+            * Commit and push to GitHub.
+            * Add the Helm repo locally
+              ```bash 
+              helm repo add mycharts https://<username>.github.io/my-helm-charts/
+              helm repo update
+              ```
+            * Install the chart from the GitHub repo
+              ```bash
+              helm install spring-boot-test mycharts/spring-boot-payment-platform -f values-test.yaml
+              ```
+            * My reference helm repo is https://github.com/Jayesh-Shinde/helm-charts
+
+---
 
 
 
