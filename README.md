@@ -134,12 +134,13 @@ ENTRYPOINT ["java","-jar","/ledger-service-1.0-SNAPSHOT.jar"]
     - kubernetes folder contain the service files to deploy supporting all components
         1) postgresql for relational database of spring boot services
         2) kafka for sharing messages between the microservices
-        3) keycloak service for generating and validating access token //TODO
-        4) postgresql for persisting data of keycloak //TODO
+        3) keycloak service for generating and validating access token
+        4) postgresql for persisting data of keycloak
         5) account-service
         6) ledger-service
         7) networking ingress service to expose account service / ledger service / keycloak to outside
-           of minikube service //TODO
+           of minikube service
+        8) Use of helm //TODO
 
 
 - Added a sample github workflow which can run build and publish individual microservices to dockerhub
