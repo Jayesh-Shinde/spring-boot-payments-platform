@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kafka-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.kafka.kafkaPVC.storage }}
+  storageClassName: standard
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+spec:
+  selector:
+    app: kafka
+  ports:
+    - port: {{ .Values.kafka.service.client.port }}
+      targetPort: {{ .Values.kafka.service.client.port }}
+      name: client
+    - port: {{ .Values.kafka.service.controller.port }}
+      targetPort: {{ .Values.kafka.service.controller.port }}
+      name: controller
+  type: {{ .Values.service.type }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+spec:
+  replicas: {{ .Values.kafka.replicas }}
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      initContainers:
+        - name: init-kafka-dir
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              "mkdir -p /var/lib/kafka/data && chown -R 1001:1001 /var/lib/kafka/data && sleep 5",
+            ]
+          volumeMounts:
+            - mountPath: {{.Values.kafka.volumeMounts.mountPath}}
+              name: kafka-data
+      containers:
+        - name: kafka
+          image: {{.Values.kafka.image.repository}}:{{.Values.kafka.image.tag}}
+          ports:
+            - containerPort: {{.Values.kafka.image.containerPort}}
+          env:
+            # KRaft mode
+            - name: KAFKA_CFG_PROCESS_ROLES
+              value: {{.Values.kafka.environment.KAFKA_CFG_PROCESS_ROLES}}
+            - name: KAFKA_CFG_NODE_ID
+              value: "{{.Values.kafka.environment.KAFKA_CFG_NODE_ID}}"
+            - name: KAFKA_CFG_LISTENERS
+              value: {{.Values.kafka.environment.KAFKA_CFG_LISTENERS}}
+            - name: KAFKA_CFG_ADVERTISED_LISTENERS
+              value: {{.Values.kafka.environment.KAFKA_CFG_ADVERTISED_LISTENERS}}
+            - name: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
+              value: {{.Values.kafka.environment.KAFKA_CFG_CONTROLLER_LISTENER_NAMES}}
+            - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+              value: {{.Values.kafka.environment.KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP}}
+            - name: KAFKA_CFG_NUM_PARTITIONS
+              value: "{{.Values.kafka.environment.KAFKA_CFG_NUM_PARTITIONS}}"
+            - name: KAFKA_CFG_LOG_DIRS
+              value: {{.Values.kafka.environment.KAFKA_CFG_LOG_DIRS}}
+            - name: ALLOW_PLAINTEXT_LISTENER
+              value: "{{.Values.kafka.environment.ALLOW_PLAINTEXT_LISTENER}}"
+            - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
+              value: {{.Values.kafka.environment.KAFKA_CFG_CONTROLLER_QUORUM_VOTERS}}
+            - name: KAFKA_CFG_CLUSTER_ID
+              value: {{.Values.kafka.environment.KAFKA_CFG_CLUSTER_ID}}
+            - name: KAFKA_KRAFT_CLUSTER_ID
+              value: {{.Values.kafka.environment.KAFKA_KRAFT_CLUSTER_ID}}
+          resources:
+            requests:
+              memory: {{.Values.kafka.resources.requests.memory }}
+              cpu: {{.Values.kafka.resources.requests.cpu }}
+            limits:
+              memory: {{.Values.kafka.resources.limits.memory }}
+              cpu: {{.Values.kafka.resources.limits.cpu }}
+          volumeMounts:
+            - name: kafka-data
+              mountPath: {{.Values.kafka.volumeMounts.mountPath}}
+      volumes:
+        - name: kafka-data
+          persistentVolumeClaim:
+            claimName: kafka-pvc

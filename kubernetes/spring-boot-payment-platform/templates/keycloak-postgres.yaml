@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloakpostgres
+spec:
+  selector:
+    app: keycloakpostgres
+  ports:
+  - port: {{.Values.keycloakpostgres.servicePort}}
+    targetPort: {{.Values.keycloakpostgres.servicePort}}
+  type: {{.Values.service.type}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: keycloakpostgres-pvc
+spec:
+  resources:
+    requests:
+      storage: {{.Values.keycloakpostgres.pvc.storage}}
+  accessModes:
+    - ReadWriteOnce
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloakpostgres
+spec:
+  selector:
+    matchLabels:
+      app: keycloakpostgres
+  replicas: {{.Values.keycloakpostgres.replicas}}
+  template:
+    metadata:
+      labels:
+        app: keycloakpostgres
+        tier: db
+    spec:
+      containers:
+        - name: keycloakpostgres
+          image: postgres:16
+          ports:
+            - containerPort: {{.Values.keycloakpostgres.servicePort}}
+          env:
+            - name: POSTGRES_USER
+              value: {{.Values.keycloakpostgres.environment.POSTGRES_USER}}
+            - name: POSTGRES_PASSWORD
+              value: {{.Values.keycloakpostgres.environment.POSTGRES_PASSWORD}}
+            - name: POSTGRES_DB
+              value: {{.Values.keycloakpostgres.environment.POSTGRES_DB}}
+          resources:
+            requests:
+              memory: {{.Values.keycloakpostgres.resources.requests.memory}}
+              cpu: {{.Values.keycloakpostgres.resources.requests.cpu}}
+            limits:
+              memory: {{.Values.keycloakpostgres.resources.limits.memory}}
+              cpu: {{.Values.keycloakpostgres.resources.limits.cpu}}
+          volumeMounts:
+            - mountPath: {{.Values.keycloakpostgres.volumeMounts.mountPath}}
+              name: {{ .Values.keycloakpostgres.volumeMounts.name}}
+      volumes:
+        - name: keycloakpostgres-storage
+          persistentVolumeClaim:
+            claimName: keycloakpostgres-pvc
