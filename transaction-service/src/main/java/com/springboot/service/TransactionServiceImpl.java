@@ -1,6 +1,8 @@
 package com.springboot.service;
 
 import com.springboot.dto.events.TransactionEvent;
+import com.springboot.dto.exceptions.BusinessException;
+import com.springboot.dto.exceptions.ValidationException;
 import com.springboot.dto.requests.TransactionRequest;
 import com.springboot.dto.response.AccountBalances;
 import com.springboot.dto.response.AccountDTO;
@@ -9,45 +11,78 @@ import com.springboot.entity.Transaction;
 import com.springboot.feignclients.AccountClient;
 import com.springboot.feignclients.LedgerClient;
 import com.springboot.repository.TransactionRepository;
+import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
-
     private final AccountClient accountClient;
-
     private final LedgerClient ledgerClient;
-
     private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final ExecutorService executorService; // injected from AsyncConfig Configuration bean
+    // which is under configuration package, this makes sure when network call runs in different thread then it
+    // ensures the SecurityContext (JWT) is copied from the request thread into the async thread. which is used in
+    // FeignClientConfig Configuration
 
     public void sendTransactionCreated(TransactionEvent transactionEvent) {
         kafkaTemplate.send("transactions.created", transactionEvent);
+    }
+
+    @PreDestroy
+    public void shutdownExecutor() {
+        executorService.shutdown();
     }
 
     @Override
     @Transactional
     public TransactionResponse createTransaction(TransactionRequest request, String idempotencyKey) {
         if (request.getFromAccountID().equals(request.getToAccountId())) {
-            throw new RuntimeException("credit and debit account can not be same");
+            throw new ValidationException("credit and debit account can not be same");
         }
+        CompletableFuture<AccountDTO> fromAccount = CompletableFuture.supplyAsync(()
+                        -> accountClient.getAccountsById(request.getFromAccountID()), executorService)
+                .exceptionally(ex -> {
+                    throw new BusinessException("Failed to fetch from account: " + ex.getMessage());
+                });
+        CompletableFuture<AccountDTO> toAccount = CompletableFuture.supplyAsync(()
+                        -> accountClient.getAccountsById(request.getToAccountId()), executorService)
+                .exceptionally(ex -> {
+                    throw new BusinessException("Failed to fetch from account: " + ex.getMessage());
+                });
         // if account does not exist below calls throw error
-        AccountDTO fromAccount = accountClient.getAccountsById(request.getFromAccountID());
-        AccountDTO toAccount = accountClient.getAccountsById(request.getToAccountId());
+        //AccountDTO fromAccount = accountClient.getAccountsById(request.getFromAccountID());
+        //AccountDTO toAccount = accountClient.getAccountsById(request.getToAccountId());
 
-        if (!fromAccount.getCurrency().equals(toAccount.getCurrency())) {
-            throw new RuntimeException("credit and debit account have mismatch in currency type");
+        CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(fromAccount, toAccount);
+        List<AccountDTO> result;
+        try {
+            result = combinedFuture.thenApply(i -> {
+                return List.of(fromAccount.join(), toAccount.join());
+            }).join();
+        } catch (CompletionException e) {
+            throw (e.getCause() instanceof RuntimeException) ?
+                    (RuntimeException) e.getCause() : new BusinessException("Async error");
         }
-
+        if (!result.get(0).getCurrency().equals(result.get(1).getCurrency())) {
+            throw new ValidationException("credit and debit account have mismatch in currency type");
+        }
         ResponseEntity<AccountBalances> accountBalance = ledgerClient.getAccountBalance(request.getFromAccountID());
         if (accountBalance.getBody() != null && accountBalance.getBody().getBalance().compareTo(request.getAmount()) < 0) {
-            throw new RuntimeException("debit account does not have sufficient balance");
+            throw new BusinessException("debit account does not have sufficient balance");
         }
         TransactionEvent transactionEvent = new TransactionEvent(request, idempotencyKey);
         sendTransactionCreated(transactionEvent);
