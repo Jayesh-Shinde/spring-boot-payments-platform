@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.springboot.JournalServiceTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.137 s -- in com.springboot.JournalServiceTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.115 s -- in com.springboot.JournalServiceTest

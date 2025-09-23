@@ -6,10 +6,15 @@ com/springboot/dto/requests/TransferRequest.class
 com/springboot/dto/response/JournalResponse.class
 com/springboot/dto/enums/JournalStatus.class
 com/springboot/dto/requests/AccountRequest.class
+com/springboot/dto/exceptions/ValidationException.class
 com/springboot/dto/response/AccountDTO.class
+com/springboot/dto/exceptions/ResourceNotFoundException.class
 com/springboot/dto/response/JournalLineResponse.class
+com/springboot/dto/exceptions/BusinessException.class
 com/springboot/dto/requests/JournalRequest.class
 com/springboot/dto/response/AccountBalances.class
 com/springboot/dto/response/TransactionResponse.class
+com/springboot/dto/exceptions/ErrorResponse.class
 com/springboot/dto/enums/JournalLineEntryType.class
 com/springboot/dto/events/TransactionEvent.class
+com/springboot/dto/exceptions/GlobalExceptionHandler.class

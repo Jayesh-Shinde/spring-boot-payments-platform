@@ -4,6 +4,7 @@ import com.springboot.dto.enums.JournalLineEntryType;
 import com.springboot.dto.enums.JournalStatus;
 import com.springboot.dto.events.AccountCreatedEvent;
 import com.springboot.dto.events.TransactionEvent;
+import com.springboot.dto.exceptions.BusinessException;
 import com.springboot.dto.requests.JournalLineRequest;
 import com.springboot.dto.requests.JournalRequest;
 import com.springboot.dto.requests.TransactionRequest;
@@ -16,7 +17,6 @@ import com.springboot.entity.JournalLines;
 import com.springboot.repository.JournalLineRepository;
 import com.springboot.repository.JournalRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,7 +140,7 @@ public class JournalServiceImpl implements JournalService {
         }
 
         if (getAccountBalance(transferRequest.getDebitAccountId()).getBalance().compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalStateException("Insufficient funds in account " + transferRequest.getDebitAccountId());
+            throw new BusinessException("Insufficient funds in account " + transferRequest.getDebitAccountId());
         }
 
 

@@ -2,6 +2,7 @@ package com.springboot.service;
 
 import com.springboot.dto.events.AccountCreatedEvent;
 
+import com.springboot.dto.exceptions.ValidationException;
 import com.springboot.dto.requests.AccountRequest;
 import com.springboot.dto.response.AccountDTO;
 import com.springboot.entity.Accounts;
@@ -31,7 +32,7 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Override
     public AccountDTO getAccountById(UUID id) {
-        Accounts accounts = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("did not find account by id " + id));
+        Accounts accounts = accountRepository.findById(id).orElseThrow(() -> new ValidationException("did not find account by id " + id));
         return new AccountDTO(accounts.getId(),
                 accounts.getName(),
                 accounts.getCurrency(),

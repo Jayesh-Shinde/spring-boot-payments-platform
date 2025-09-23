@@ -2,6 +2,7 @@
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/requests/TransactionRequest.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/response/AccountDTO.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/enums/JournalLineEntryType.java
+/Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/exceptions/ErrorResponse.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/response/JournalLineResponse.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/response/TransactionResponse.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/events/TransactionEvent.java
@@ -9,7 +10,11 @@
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/requests/JournalRequest.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/requests/TransferRequest.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/enums/JournalStatus.java
+/Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/exceptions/BusinessException.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/requests/JournalLineRequest.java
+/Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/exceptions/ResourceNotFoundException.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/events/AccountCreatedEvent.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/requests/AccountRequest.java
+/Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/exceptions/ValidationException.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/enums/TransactionStatus.java
+/Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/common/src/main/java/com/springboot/dto/exceptions/GlobalExceptionHandler.java
