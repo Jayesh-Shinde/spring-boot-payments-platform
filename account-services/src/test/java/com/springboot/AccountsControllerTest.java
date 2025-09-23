@@ -3,10 +3,12 @@ package com.springboot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.controller.AccountsController;
+import com.springboot.dto.response.AccountDTO;
 import com.springboot.entity.Accounts;
 import com.springboot.service.AccountsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = AccountsController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class AccountsControllerTest {
 
     @Autowired
@@ -36,8 +39,8 @@ public class AccountsControllerTest {
 
     @Test
     public void getAccountsById() throws Exception {
-        Accounts accounts = new Accounts("Ram", "JPY", "Saving");
         UUID uuid = UUID.randomUUID();
+        AccountDTO accounts = new AccountDTO(uuid, "Ram", "JPY", "Saving", null);
         when(accountsService.getAccountById(uuid))
                 .thenReturn(accounts);
         mockMvc.perform(get("/api/accounts/" + uuid)

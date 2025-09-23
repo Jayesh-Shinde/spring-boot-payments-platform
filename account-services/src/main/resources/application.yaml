@@ -1,4 +1,9 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/SpringBootRealm
   kafka:
     bootstrap-servers: kafka:9092
     producer:

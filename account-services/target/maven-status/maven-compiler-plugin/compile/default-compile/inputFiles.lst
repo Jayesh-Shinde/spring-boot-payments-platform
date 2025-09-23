@@ -1,7 +1,9 @@
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/account-services/src/main/java/com/springboot/controller/AccountsController.java
+/Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/account-services/src/main/java/com/springboot/configuration/KafkaTopicConfig.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/account-services/src/main/java/com/springboot/configuration/JpaAuditingConfig.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/account-services/src/main/java/com/springboot/repository/AccountRepository.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/account-services/src/main/java/com/springboot/entity/Accounts.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/account-services/src/main/java/com/springboot/service/AccountsService.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/account-services/src/main/java/com/springboot/service/AccountsServiceImpl.java
+/Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/account-services/src/main/java/com/springboot/SecurityConfig.java
 /Users/jayeshshinde/Studies/SpringBoot/spring-boot-payments-platform/account-services/src/main/java/com/springboot/AccountServiceApplication.java

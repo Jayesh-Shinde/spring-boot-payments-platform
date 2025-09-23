@@ -1,10 +1,15 @@
 com/springboot/dto/requests/JournalLineRequest.class
-com/springboot/dto/requests/JournalRequest.class
+com/springboot/dto/enums/TransactionStatus.class
 com/springboot/dto/events/AccountCreatedEvent.class
-com/springboot/dto/response/AccountBalances.class
+com/springboot/dto/requests/TransactionRequest.class
 com/springboot/dto/requests/TransferRequest.class
 com/springboot/dto/response/JournalResponse.class
 com/springboot/dto/enums/JournalStatus.class
 com/springboot/dto/requests/AccountRequest.class
+com/springboot/dto/response/AccountDTO.class
 com/springboot/dto/response/JournalLineResponse.class
+com/springboot/dto/requests/JournalRequest.class
+com/springboot/dto/response/AccountBalances.class
+com/springboot/dto/response/TransactionResponse.class
 com/springboot/dto/enums/JournalLineEntryType.class
+com/springboot/dto/events/TransactionEvent.class

@@ -1,6 +1,7 @@
 package com.springboot.controller;
 
 import com.springboot.dto.requests.AccountRequest;
+import com.springboot.dto.response.AccountDTO;
 import com.springboot.entity.Accounts;
 import com.springboot.service.AccountsService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class AccountsController {
     private final AccountsService accountsService;
 
     @GetMapping("/{id}")
-    public Accounts getAccountsById(@PathVariable("id") UUID id) {
+    public AccountDTO getAccountsById(@PathVariable("id") UUID id) {
         return accountsService.getAccountById(id);
     }
 

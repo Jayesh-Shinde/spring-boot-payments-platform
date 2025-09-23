@@ -3,8 +3,10 @@ package com.springboot.service;
 import com.springboot.dto.enums.JournalLineEntryType;
 import com.springboot.dto.enums.JournalStatus;
 import com.springboot.dto.events.AccountCreatedEvent;
+import com.springboot.dto.events.TransactionEvent;
 import com.springboot.dto.requests.JournalLineRequest;
 import com.springboot.dto.requests.JournalRequest;
+import com.springboot.dto.requests.TransactionRequest;
 import com.springboot.dto.requests.TransferRequest;
 import com.springboot.dto.response.AccountBalances;
 import com.springboot.dto.response.JournalLineResponse;
@@ -27,6 +29,16 @@ import java.util.*;
 public class JournalServiceImpl implements JournalService {
     private final JournalRepository journalRepository;
     private final JournalLineRepository journalLineRepository;
+
+    @KafkaListener(topics = "transactions.created", groupId = "ledger-service-transaction")
+    public void processTransaction(TransactionEvent transactionEvent) {
+        TransactionRequest transactionRequest = transactionEvent.getTransactionRequest();
+        JournalRequest journalRequest = new JournalRequest("transfer", JournalStatus.POSTED, List.of(
+                new JournalLineRequest(transactionRequest.getFromAccountID(), transactionRequest.getAmount(), JournalLineEntryType.DEBIT),
+                new JournalLineRequest(transactionRequest.getToAccountId(), transactionRequest.getAmount(), JournalLineEntryType.CREDIT)
+        ));
+        createJournal(journalRequest, transactionEvent.getIdempotencyKey());
+    }
 
     //TODO: resolve later @Transactional removing this as bitnami/kafka:3.7.0 does not support if
     @KafkaListener(topics = "accounts.created", groupId = "ledger-service")
