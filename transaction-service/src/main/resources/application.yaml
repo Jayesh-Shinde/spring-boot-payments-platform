@@ -1,4 +1,46 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: "transaction-service"
 spring:
+  logging:
+    level:
+      io.github.resilience4j: DEBUG
+  resilience4j:
+    retry:
+      instances:
+        transactionService:
+          maxAttempts: 3
+          waitDuration: 500ms
+          intervalFunction:
+            type: exponential_backoff
+            initialInterval: 500ms
+            multiplier: 2.0               # grows 0.5s then → 1s then → 2s
+            randomizationFactor: 0.5
+  circuitbreaker:
+    instances:
+      transactionService:
+        slidingWindowType: COUNT_BASED  # or TIME_BASED
+        slidingWindowSize: 10           # number of calls in the window
+        minimumNumberOfCalls: 5         # only start calculating after 5 calls
+        failureRateThreshold: 50        # % of failed calls to open circuit
+        waitDurationInOpenState: 10s    # how long to stay open before half‑open
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+  ratelimiter:
+    instances:
+      transactionService:
+        limitForPeriod: 10              # max calls per refresh period
+        limitRefreshPeriod: 1s          # window length
+        timeoutDuration: 500ms          # it waits up to 500ms for a slot, otherwise fails.
   security:
     oauth2:
       resourceserver:
@@ -13,7 +55,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   datasource:
     # Standard datasource properties
-    url: jdbc:postgresql://postgresql:5432/transactiondb
+    url: jdbc:postgresql://localhost:5432/transactiondb
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver

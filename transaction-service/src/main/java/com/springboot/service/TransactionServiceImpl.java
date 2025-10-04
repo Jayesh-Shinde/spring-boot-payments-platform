@@ -11,6 +11,9 @@ import com.springboot.entity.Transaction;
 import com.springboot.feignclients.AccountClient;
 import com.springboot.feignclients.LedgerClient;
 import com.springboot.repository.TransactionRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -47,8 +50,16 @@ public class TransactionServiceImpl implements TransactionService {
         executorService.shutdown();
     }
 
+    public TransactionResponse fallbackCreateTransaction(TransactionRequest request, String idempotencyKey, Throwable ex) {
+        System.out.println(ex.getMessage());
+        return null;
+    }
+
     @Override
     @Transactional
+    @Retry(name = "transactionService")
+    @CircuitBreaker(name = "transactionService", fallbackMethod = "fallbackCreateTransaction")
+    @RateLimiter(name = "transactionService")
     public TransactionResponse createTransaction(TransactionRequest request, String idempotencyKey) {
         if (request.getFromAccountID().equals(request.getToAccountId())) {
             throw new ValidationException("credit and debit account can not be same");
@@ -70,9 +81,7 @@ public class TransactionServiceImpl implements TransactionService {
         CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(fromAccount, toAccount);
         List<AccountDTO> result;
         try {
-            result = combinedFuture.thenApply(i -> {
-                return List.of(fromAccount.join(), toAccount.join());
-            }).join();
+            result = combinedFuture.thenApply(i -> List.of(fromAccount.join(), toAccount.join())).join();
         } catch (CompletionException e) {
             throw (e.getCause() instanceof RuntimeException) ?
                     (RuntimeException) e.getCause() : new BusinessException("Async error");
