@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
                                                        HttpServletRequest request) {
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Unexpected error occurred",
+                "Unexpected error occurred: " + ex.getMessage(),
                 LocalDateTime.now(),
                 request.getRequestURI()
         );
