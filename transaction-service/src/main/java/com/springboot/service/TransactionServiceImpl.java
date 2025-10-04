@@ -40,6 +40,7 @@ public class TransactionServiceImpl implements TransactionService {
     // which is under configuration package, this makes sure when network call runs in different thread then it
     // ensures the SecurityContext (JWT) is copied from the request thread into the async thread. which is used in
     // FeignClientConfig Configuration
+    //ExecutorService executorService is autowired from AsyncConfig Configuration bean via @RequiredArgsConstructor on this class as it inject via constructor
 
     public void sendTransactionCreated(TransactionEvent transactionEvent) {
         kafkaTemplate.send("transactions.created", transactionEvent);
