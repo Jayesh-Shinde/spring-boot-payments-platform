@@ -10,3 +10,4 @@ com/springboot/configuration/FeignClientConfig.class
 com/springboot/SecurityConfig.class
 com/springboot/TransactionServiceApplication.class
 com/springboot/feignclients/LedgerClient.class
+com/springboot/filter/CorrelationIdFilter.class

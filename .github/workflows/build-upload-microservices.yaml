@@ -20,11 +20,13 @@ jobs:
         run: |
           mvn clean install
           cd account-services
-          docker build -t account-service:1.0 .
-          docker tag account-service:1.0 jayesh888/account-service:latest
+          docker build -t jayesh888/account-service:latest .
           docker push jayesh888/account-service:latest
           cd ../
           cd ledger-service
-          docker build -t ledger-service:1.0 .
-          docker tag ledger-service:1.0 jayesh888/ledger-service:latest
+          docker build -t jayesh888/ledger-service:latest .
           docker push jayesh888/ledger-service:latest
+          cd ../
+          cd transaction-service
+          docker build -t jayesh888/transaction-service:latest .
+          docker push jayesh888/transaction-service:latest
