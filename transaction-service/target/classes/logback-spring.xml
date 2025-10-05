@@ -22,6 +22,15 @@
         </encoder>
     </appender>
 
+    <!-- Hibernate SQL logs -->
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+        <appender-ref ref="JSON_CONSOLE"/>
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql" level="TRACE" additivity="false">
+        <appender-ref ref="JSON_CONSOLE"/>
+    </logger>
+
     <root level="INFO">
         <appender-ref ref="JSON_CONSOLE"/>
     </root>

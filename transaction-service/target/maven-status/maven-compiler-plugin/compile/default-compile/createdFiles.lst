@@ -1,3 +1,4 @@
+com/springboot/configuration/ContextPropagatingExecutorService.class
 com/springboot/service/TransactionServiceImpl.class
 com/springboot/configuration/JpaAuditingConfig.class
 com/springboot/configuration/AsyncConfig.class

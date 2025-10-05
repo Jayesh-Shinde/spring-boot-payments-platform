@@ -2,18 +2,22 @@ package com.springboot.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.concurrent.DelegatingSecurityContextExecutorService;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Configuration
+@EnableAsync
 public class AsyncConfig {
 
-    @Bean
+    @Bean(name = "executorService")
     public ExecutorService executorService() {
-        // Wraps the executor so it propagates SecurityContext
-        return new DelegatingSecurityContextExecutorService(Executors.newCachedThreadPool());
+        ExecutorService base = Executors.newCachedThreadPool();
+        return new ContextPropagatingExecutorService(base);
     }
-}
 
+    // Optional: if you want Spring's @Async to pick this executor automatically,
+    // implement AsyncConfigurer#getAsyncExecutor() returning this bean,
+    // or name bean "taskExecutor". But injection by name "executorService" will work.
+}
