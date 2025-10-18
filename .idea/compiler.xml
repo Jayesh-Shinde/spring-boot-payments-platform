@@ -18,6 +18,7 @@
         <module name="transaction-service" />
         <module name="account-services" />
         <module name="common" />
+        <module name="notification-service" />
         <module name="ledger-service" />
       </profile>
     </annotationProcessing>
@@ -27,6 +28,7 @@
       <module name="account-services" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="ledger-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="transaction-service" options="-parameters" />
     </option>
   </component>
