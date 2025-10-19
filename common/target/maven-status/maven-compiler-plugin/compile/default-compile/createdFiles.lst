@@ -15,6 +15,8 @@ com/springboot/dto/requests/JournalRequest.class
 com/springboot/dto/response/AccountBalances.class
 com/springboot/dto/response/TransactionResponse.class
 com/springboot/dto/exceptions/ErrorResponse.class
+com/springboot/dto/requests/AuditRequest.class
 com/springboot/dto/enums/JournalLineEntryType.class
 com/springboot/dto/events/TransactionEvent.class
 com/springboot/dto/exceptions/GlobalExceptionHandler.class
+com/springboot/dto/response/AuditLogResponse.class

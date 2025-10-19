@@ -14,10 +14,12 @@
         <module>ledger-service</module>
         <module>transaction-service</module>
         <module>notification-service</module>
+        <module>audit-service</module>
     </modules>
 
     <properties>
         <java.version>21</java.version>
+        <lombok.version>1.18.38</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -68,7 +70,7 @@
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok</artifactId>
-                                <version>1.18.38</version>
+                                <version>${lombok.version}</version>
                             </path>
                         </annotationProcessorPaths>
                     </configuration>

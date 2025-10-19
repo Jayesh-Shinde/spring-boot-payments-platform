@@ -18,5 +18,5 @@ public class TransactionRequest {
     @NotNull
     @DecimalMin("1.00")
     private BigDecimal amount;
-    
+
 }

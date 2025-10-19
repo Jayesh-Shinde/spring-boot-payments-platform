@@ -18,6 +18,7 @@
         <module name="transaction-service" />
         <module name="account-services" />
         <module name="common" />
+        <module name="audit-service" />
         <module name="notification-service" />
         <module name="ledger-service" />
       </profile>
@@ -26,6 +27,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="account-services" options="-parameters" />
+      <module name="audit-service" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="ledger-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />

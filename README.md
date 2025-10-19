@@ -87,7 +87,26 @@ CONSTRAINT journal_lines_pkey PRIMARY KEY (id)
 ALTER TABLE public.journal_lines ADD CONSTRAINT journal_lines_journal_id_fkey FOREIGN KEY (journal_id) REFERENCES
 public.journals(id);
 
+```
 
+Below table under audit db
+
+```sql
+-- public.audit_log definition
+
+-- Drop table
+
+-- DROP TABLE public.audit_log;
+
+CREATE TABLE public.audit_log (
+	id uuid NOT NULL,
+	transaction_id uuid NOT NULL,
+	event_type varchar(255) NOT NULL,
+	account_id uuid NOT NULL,
+	details varchar(255) NULL,
+	created_at timestamp NOT NULL,
+	CONSTRAINT audit_log_pk PRIMARY KEY (id)
+);
 ```
 
 ### Setup and Run

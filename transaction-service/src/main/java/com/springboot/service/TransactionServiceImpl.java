@@ -92,10 +92,11 @@ public class TransactionServiceImpl implements TransactionService {
         if (accountBalance.getBody() != null && accountBalance.getBody().getBalance().compareTo(request.getAmount()) < 0) {
             throw new BusinessException("debit account does not have sufficient balance");
         }
-        TransactionEvent transactionEvent = new TransactionEvent(request, idempotencyKey);
-        sendTransactionCreated(transactionEvent);
+
         Transaction transaction = new Transaction(request.getFromAccountID(), request.getToAccountId(), request.getAmount(), "SUCCESS");
         Transaction savedTransaction = transactionRepository.save(transaction);
+        TransactionEvent transactionEvent = new TransactionEvent(request, savedTransaction.getId(), idempotencyKey);
+        sendTransactionCreated(transactionEvent);
         return new TransactionResponse(savedTransaction.getId(), "SUCCESS");
     }
 }
