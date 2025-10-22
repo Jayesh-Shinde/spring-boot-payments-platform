@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequestMapping("/api/audit")
 @RequiredArgsConstructor
 public class AuditController {
-    private AuditLogService auditLogService;
+    private final AuditLogService auditLogService;
 
     @GetMapping("/{transactionId}")
     public List<AuditLogResponse> getAuditLogs(@PathVariable UUID transactionId) {
