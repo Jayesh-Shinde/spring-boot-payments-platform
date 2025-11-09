@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Exit immediately if a command exits with a non-zero status.
+set -e
+
+# Build all maven projects
+mvn clean install
+
+# Build and push docker images
+(cd account-services && docker build -t <your-repo>/account-service:latest . && docker push <your-repo>/account-service:latest)
+(cd ledger-service && docker build -t <your-repo>/ledger-service:latest . && docker push <your-repo>/ledger-service:latest)
+(cd transaction-service && docker build -t <your-repo>/transaction-service:latest . && docker push <your-repo>/transaction-service:latest)
+(cd notification-service && docker build -t <your-repo>/notification-service:latest . && docker push <your-repo>/notification-service:latest)
+(cd audit-service && docker build -t <your-repo>/audit-service:latest . && docker push <your-repo>/audit-service:latest)
+
+echo "All services built and pushed successfully!"

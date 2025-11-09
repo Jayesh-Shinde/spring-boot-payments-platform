@@ -150,6 +150,34 @@ ENTRYPOINT ["java","-jar","/ledger-service-1.0-SNAPSHOT.jar"]
 
 ```
 
+### Automated Build and Push
+
+For a more streamlined process, a template shell script `build-and-push.sh.template` is provided to build all services and push their Docker images to a registry.
+
+1.  **Create your local build script:**
+    First, copy the template to a new local file. This file is ignored by Git, so your repository name will not be committed.
+    ```sh
+    cp build-and-push.sh.template build-and-push-local.sh
+    ```
+
+2.  **Update the repository placeholder:**
+    Open `build-and-push-local.sh` and replace all instances of `<your-repo>` with your Docker Hub username or repository name.
+
+3.  **Make the script executable:**
+    ```sh
+    chmod +x build-and-push-local.sh
+    ```
+
+4.  **Run the script:**
+    ```sh
+    ./build-and-push-local.sh
+    ```
+
+This script will:
+- Run `mvn clean install` to build all the Java projects.
+- Sequentially build a Docker image for each service.
+- Push each image to `<your-repo>/<service-name>:latest`.
+
 - Deploy to kubernetes
     - kubernetes folder contain the service files to deploy supporting all components
         1) postgresql for relational database of spring boot services
