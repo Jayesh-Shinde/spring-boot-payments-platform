@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Configuration
 @EnableJpaAuditing
-@Profile("!test")   // disable in tests
+//@Profile("!test")   // disable in tests
 public class JpaAuditingConfig {
 }

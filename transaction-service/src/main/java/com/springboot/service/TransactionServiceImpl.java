@@ -94,6 +94,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         Transaction transaction = new Transaction(request.getFromAccountID(), request.getToAccountId(), request.getAmount(), "SUCCESS");
+        System.out.println("transaction: " + transaction);
         Transaction savedTransaction = transactionRepository.save(transaction);
         TransactionEvent transactionEvent = new TransactionEvent(request, savedTransaction.getId(), idempotencyKey);
         sendTransactionCreated(transactionEvent);
