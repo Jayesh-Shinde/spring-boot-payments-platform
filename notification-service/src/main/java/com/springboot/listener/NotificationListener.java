@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class NotificationListener {
     private final NotificationService notificationService;
 
-    @KafkaListener(topics = "transactions.created", groupId = "notification-service")
+    @KafkaListener(topics = "transactions.created", groupId = "notification-service", concurrency = "2")
     public void handleTransactionCreated(TransactionEvent transactionEvent) {
         log.info("Received Transaction created event {}", transactionEvent);
         notificationService.sendEmail("abc@gmail.com", "Transaction completed",
