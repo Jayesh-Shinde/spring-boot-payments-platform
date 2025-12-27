@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -31,5 +33,10 @@ public class UserServiceImpl implements UserService {
                 UserStatus.valueOf(requestBody.getStatus()),
                 KycStatus.valueOf(requestBody.getKycStatus()))
         );
+    }
+
+    @Override
+    public User getUserById(UUID userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
